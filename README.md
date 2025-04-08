@@ -1,3 +1,4 @@
+
 # Gestão Territorial
 
 ## Descrição
@@ -34,9 +35,13 @@ O objetivo é implementar uma aplicação em Java que leia ficheiros CSV com dad
 Testes básicos criados com JUnit 5 para verificar a integridade dos dados e a criação dos grafos.
 
 ## Autor
-- **Nome: Afonso Ramos
-- **Número de aluno: 105446,
+- **Nome:** Afonso Ramos
+- **Número de aluno:** 105446
 - **Curso:** Informática e Gestão de Empresas
 
 ## Repositório GitHub
 [Abrir projeto no GitHub](https://github.com/AfonsoRamos1234/ES-2024_25-2Sem-LIGE-GrupoA)
+
+# gestao-territorio
+Gestão Territorial em Java com Maven
+
