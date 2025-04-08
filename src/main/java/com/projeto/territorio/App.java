@@ -2,7 +2,15 @@ package com.projeto.territorio;
 
 import java.util.*;
 
+/**
+ * Classe principal responsável por carregar dados, construir os grafos e apresentar o menu interativo.
+ */
 public class App {
+    /**
+     * Método principal que inicia o programa.
+     *
+     * @param args Argumentos da linha de comando (não utilizados).
+     */
     public static void main(String[] args) {
         String caminho = System.getProperty("user.dir") + "/data/Madeira-Moodle-1.1.csv";
         List<Propriedade> propriedades = CsvLoader.carregarPropriedades(caminho);
@@ -13,11 +21,24 @@ public class App {
             grafo.adicionarPropriedade(p);
         }
 
-        for (int i = 0; i < propriedades.size() - 1; i++) {
-            Propriedade p1 = propriedades.get(i);
-            Propriedade p2 = propriedades.get(i + 1);
-            if (p1.getIdProprietario().equals(p2.getIdProprietario())) {
-                grafo.adicionarAresta(p1, p2);
+        Map<String, List<Propriedade>> porConcelho = new HashMap<>();
+
+        for (Propriedade p : propriedades) {
+            grafo.adicionarPropriedade(p);
+            porConcelho.computeIfAbsent(p.getConcelho(), k -> new ArrayList<>()).add(p);
+        }
+
+        // Connect small groups only
+        for (List<Propriedade> grupo : porConcelho.values()) {
+            for (int i = 0; i < grupo.size(); i++) {
+                Propriedade p1 = grupo.get(i);
+                for (int j = i + 1; j < Math.min(i + 6, grupo.size()); j++) {
+                    Propriedade p2 = grupo.get(j);
+                    if (!p1.getIdProprietario().equals(p2.getIdProprietario())) {
+                        grafo.setNgbh(p1, p2);
+                        grafo.setNgbh(p2, p1);
+                    }
+                }
             }
         }
 
@@ -88,6 +109,13 @@ public class App {
         } while (opcao != 0);
     }
 
+    /**
+     * Exibe estatísticas sobre propriedades com base em localidade (freguesia, concelho ou distrito).
+     *
+     * @param propriedades Lista de propriedades disponíveis.
+     * @param tipo Tipo de localidade (freguesia/concelho/distrito).
+     * @param nome Nome da localidade.
+     */
     public static void estatisticasPorLocal(List<Propriedade> propriedades, String tipo, String nome) {
         List<Propriedade> filtradas = new ArrayList<>();
 
@@ -113,6 +141,12 @@ public class App {
         System.out.println("Área média: " + areaMedia);
     }
 
+    /**
+     * Exibe estatísticas sobre as propriedades de um proprietário específico.
+     *
+     * @param propriedades Lista de propriedades disponíveis.
+     * @param idProprietario ID do proprietário.
+     */
     public static void estatisticasPorProprietario(List<Propriedade> propriedades, String idProprietario) {
         List<Propriedade> doProprietario = new ArrayList<>();
 
@@ -130,6 +164,11 @@ public class App {
         System.out.println("Área total: " + areaTotal);
     }
 
+    /**
+     * Identifica blocos de propriedades adjacentes pertencentes ao mesmo proprietário.
+     *
+     * @param grafo Grafo de propriedades com as adjacências já definidas.
+     */
     public static void identificarBlocosAdjacentes(GrafoPropriedades grafo) {
         Set<Propriedade> visitadas = new HashSet<>();
         Map<String, Integer> blocosPorProprietario = new HashMap<>();
@@ -169,6 +208,11 @@ public class App {
         }
     }
 
+    /**
+     * Sugere trocas entre propriedades de diferentes proprietários com base em área e proximidade.
+     *
+     * @param grafo Grafo de propriedades que contém as conexões entre propriedades vizinhas.
+     */
     public static void sugerirTrocas(GrafoPropriedades grafo) {
         System.out.println("\n Sugestões de trocas entre proprietários:");
 
@@ -194,6 +238,11 @@ public class App {
         }
     }
 
+    /**
+     * Identifica e exibe os proprietários que possuem terrenos em mais de um concelho.
+     *
+     * @param propriedades Lista de propriedades disponíveis.
+     */
     public static void proprietariosMulticoncelho(List<Propriedade> propriedades) {
         Map<String, Set<String>> concelhosPorProprietario = new HashMap<>();
 
@@ -217,7 +266,3 @@ public class App {
         }
     }
 }
-
-
-
-

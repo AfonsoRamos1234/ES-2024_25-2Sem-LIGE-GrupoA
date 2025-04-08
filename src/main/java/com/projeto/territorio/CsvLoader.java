@@ -6,8 +6,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe utilitária para carregar dados de propriedades a partir de um arquivo CSV.
+ * Cada linha do CSV representa uma propriedade com informações como área, localização e proprietário.
+ */
 public class CsvLoader {
 
+    /**
+     * Carrega as propriedades de um arquivo CSV delimitado por ponto e vírgula.
+     * Ignora a primeira linha (cabeçalho) e gera um identificador incremental para cada propriedade.
+     *
+     * @param caminhoCSV Caminho para o arquivo CSV.
+     * @return Lista de objetos {@code Propriedade} extraídos do arquivo.
+     */
     public static List<Propriedade> carregarPropriedades(String caminhoCSV) {
         List<Propriedade> propriedades = new ArrayList<>();
 
@@ -42,4 +53,3 @@ public class CsvLoader {
         return propriedades;
     }
 }
-
