@@ -13,7 +13,6 @@ public class App {
             grafo.adicionarPropriedade(p);
         }
 
-        // Liga propriedades do mesmo proprietário (simulação de adjacência)
         for (int i = 0; i < propriedades.size() - 1; i++) {
             Propriedade p1 = propriedades.get(i);
             Propriedade p2 = propriedades.get(i + 1);
@@ -21,9 +20,6 @@ public class App {
                 grafo.adicionarAresta(p1, p2);
             }
         }
-
-        System.out.println("Grafo de propriedades criado com " + grafo.getPropriedades().size() + " propriedades.");
-        System.out.println("Número de arestas: " + grafo.numeroDeArestas());
 
         // GRAFO DE PROPRIETÁRIOS
         GrafoProprietarios grafoProprietarios = new GrafoProprietarios();
@@ -39,27 +35,57 @@ public class App {
                 }
             }
         }
+
+        System.out.println("Grafo de propriedades criado com " + grafo.getPropriedades().size() + " propriedades.");
+        System.out.println("Número de arestas: " + grafo.numeroDeArestas());
         System.out.println("Grafo de proprietários criado com " + grafoProprietarios.getProprietarios().size() + " proprietários.");
         System.out.println("Número de ligações (arestas): " + grafoProprietarios.numeroDeArestas());
 
-        // ESTATÍSTICAS POR LOCALIDADE (PONTO 4)
-        estatisticasPorLocal(propriedades, "freguesia", "Arco da Calheta");
-        estatisticasPorLocal(propriedades, "concelho", "Calheta");
-        estatisticasPorLocal(propriedades, "distrito", "Ilha da Madeira (Madeira)");
+        // MENU INTERATIVO
+        Scanner scanner = new Scanner(System.in);
+        int opcao;
 
-        // ESTATÍSTICAS POR PROPRIETÁRIO (PONTO 5)
-        estatisticasPorProprietario(propriedades, "93");
-        estatisticasPorProprietario(propriedades, "659");
-        estatisticasPorProprietario(propriedades, "626");
+        do {
+            System.out.println("\n===== MENU =====");
+            System.out.println("1. Estatísticas por localidade");
+            System.out.println("2. Estatísticas por proprietário");
+            System.out.println("3. Identificar blocos adjacentes");
+            System.out.println("4. Sugerir trocas de terrenos");
+            System.out.println("5. Proprietários com terrenos em vários concelhos");
+            System.out.println("0. Sair");
+            System.out.print("Escolha uma opção: ");
+            opcao = scanner.nextInt();
+            scanner.nextLine();  // limpar buffer
 
-        // BLOCOS DE PROPRIEDADES ADJACENTES (PONTO 6)
-        identificarBlocosAdjacentes(grafo);
-
-        // SUGESTÃO DE TROCAS ENTRE PROPRIETÁRIOS (PONTO 6)
-        sugerirTrocas(grafo);
-
-        // PROPRIETÁRIOS MULTICONCELHO (PONTO 7)
-        proprietariosMulticoncelho(propriedades);
+            switch (opcao) {
+                case 1:
+                    System.out.print("Tipo (freguesia/concelho/distrito): ");
+                    String tipo = scanner.nextLine();
+                    System.out.print("Nome: ");
+                    String nome = scanner.nextLine();
+                    estatisticasPorLocal(propriedades, tipo, nome);
+                    break;
+                case 2:
+                    System.out.print("ID do proprietário: ");
+                    String id = scanner.nextLine();
+                    estatisticasPorProprietario(propriedades, id);
+                    break;
+                case 3:
+                    identificarBlocosAdjacentes(grafo);
+                    break;
+                case 4:
+                    sugerirTrocas(grafo);
+                    break;
+                case 5:
+                    proprietariosMulticoncelho(propriedades);
+                    break;
+                case 0:
+                    System.out.println("A sair...");
+                    break;
+                default:
+                    System.out.println("Opção inválida.");
+            }
+        } while (opcao != 0);
     }
 
     public static void estatisticasPorLocal(List<Propriedade> propriedades, String tipo, String nome) {
@@ -152,11 +178,9 @@ public class App {
             for (Propriedade vizinha : grafo.getAdjacentes(p1)) {
                 String dono2 = vizinha.getIdProprietario();
 
-                // Se forem de donos diferentes
                 if (!dono1.equals(dono2)) {
-                    double areaMediaAtual = p1.getArea(); // bloco atual simplificado
-                    double areaMediaComTroca = vizinha.getArea(); // se trocasse
-
+                    double areaMediaAtual = p1.getArea();
+                    double areaMediaComTroca = vizinha.getArea();
                     double valorAtual = p1.getArea();
                     double valorVizinho = vizinha.getArea();
 
@@ -193,6 +217,7 @@ public class App {
         }
     }
 }
+
 
 
 

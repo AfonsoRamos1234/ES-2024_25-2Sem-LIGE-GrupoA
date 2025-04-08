@@ -39,4 +39,4 @@ Testes básicos criados com JUnit 5 para verificar a integridade dos dados e a c
 - **Curso:** Informática e Gestão de Empresas
 
 ## Repositório GitHub
-[https://github.com/AfonsoRamos1234/gestao-territorio](https://github.com/AfonsoRamos1234/gestao-territorio)
+[Abrir projeto no GitHub](https://github.com/AfonsoRamos1234/ES-2024_25-2Sem-LIGE-GrupoA)
