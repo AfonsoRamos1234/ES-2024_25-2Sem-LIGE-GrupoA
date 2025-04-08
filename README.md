@@ -38,6 +38,12 @@ Testes básicos criados com JUnit 5 para verificar a integridade dos dados e a c
 - **Nome:** Afonso Ramos
 - **Número de aluno:** 105446
 - **Curso:** Informática e Gestão de Empresas
+- **Nome:** Afonso Padinha
+- **Número de aluno:** 105017
+- **Curso:** Informática e Gestão de Empresas
+- **Nome:** Frederico Hamann 
+- **Número de aluno:** 105345
+- **Curso:** Informática e Gestão de Empresas
 
 ## Repositório GitHub
 [Abrir projeto no GitHub](https://github.com/AfonsoRamos1234/ES-2024_25-2Sem-LIGE-GrupoA)
