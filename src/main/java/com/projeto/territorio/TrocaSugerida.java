@@ -1,58 +1,47 @@
 package com.projeto.territorio;
 
 /**
- * Representa uma sugestão de troca de propriedades entre dois proprietários distintos.
- * Contém as informações sobre os proprietários envolvidos e as propriedades que estão sendo consideradas para troca.
+ * Representa uma sugestão de troca entre duas propriedades, com critérios de proximidade e semelhança de valor.
  */
 public class TrocaSugerida {
-    private String dono1;
-    private Propriedade prop1;
-    private String dono2;
-    private Propriedade prop2;
+    private Propriedade propriedade1;
+    private Propriedade propriedade2;
+    private double diferencaArea;
+    private double distancia;
 
-    /**
-     * Cria uma nova sugestão de troca entre duas propriedades pertencentes a diferentes proprietários.
-     *
-     * @param dono1 ID do primeiro proprietário.
-     * @param prop1 Primeira propriedade a ser trocada.
-     * @param dono2 ID do segundo proprietário.
-     * @param prop2 Segunda propriedade a ser trocada.
-     */
-    public TrocaSugerida(String dono1, Propriedade prop1, String dono2, Propriedade prop2) {
-        this.dono1 = dono1;
-        this.prop1 = prop1;
-        this.dono2 = dono2;
-        this.prop2 = prop2;
+    public TrocaSugerida(Propriedade propriedade1, Propriedade propriedade2) {
+        this.propriedade1 = propriedade1;
+        this.propriedade2 = propriedade2;
+        this.diferencaArea = Math.abs(propriedade1.getArea() - propriedade2.getArea());
+        this.distancia = calcularDistancia(propriedade1, propriedade2);
     }
 
-    /**
-     * Retorna a primeira propriedade da troca sugerida.
-     *
-     * @return Propriedade do primeiro proprietário.
-     */
-    public Propriedade getProp1() {
-        return prop1;
+    public Propriedade getPropriedade1() {
+        return propriedade1;
     }
 
-    /**
-     * Retorna a segunda propriedade da troca sugerida.
-     *
-     * @return Propriedade do segundo proprietário.
-     */
-    public Propriedade getProp2() {
-        return prop2;
+    public Propriedade getPropriedade2() {
+        return propriedade2;
     }
 
-    /**
-     * Retorna uma descrição textual da sugestão de troca.
-     *
-     * @return String formatada descrevendo a troca sugerida.
-     */
+    public double getDiferencaArea() {
+        return diferencaArea;
+    }
+
+    public double getDistancia() {
+        return distancia;
+    }
+
+    private double calcularDistancia(Propriedade p1, Propriedade p2) {
+        double dx = p1.getX() - p2.getX();
+        double dy = p1.getY() - p2.getY();
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
     @Override
     public String toString() {
-        return "💡 Troca sugerida:\n- Proprietário " + dono1 + " troca " + prop1.getId() +
-                " com Proprietário " + dono2 + " (" + prop2.getId() + ")";
+        return "Troca entre " + propriedade1.getId() + " e " + propriedade2.getId() +
+                " | Diferença de área: " + diferencaArea +
+                " | Distância: " + distancia;
     }
-
-    // Add getters here if needed
 }

@@ -7,60 +7,64 @@ import java.util.Set;
 
 /**
  * Classe responsável por sugerir possíveis trocas de terrenos entre diferentes proprietários.
- * Avalia o potencial de troca com base na proximidade e semelhança de área entre as propriedades.
+ * Avalia o potencial de troca com base em semelhança de área e proximidade geográfica.
  */
 public class Trocas {
 
+    private static final double MAX_DIFERENCA_AREA = 50.0; // metros quadrados
+    private static final double MAX_DISTANCIA = 100.0;     // metros (ajustável)
+
     /**
      * Gera uma lista de sugestões de trocas entre propriedades de diferentes proprietários.
-     * A troca é sugerida apenas se os proprietários forem diferentes e a diferença de área for aceitável.
      *
      * @param propriedades Conjunto de propriedades disponíveis.
-     * @param grafo Grafo de propriedades que define as vizinhanças entre propriedades.
+     * @param grafo Grafo de propriedades com adjacência.
      * @return Lista de trocas sugeridas ordenadas por potencial de sucesso.
      */
     public List<TrocaSugerida> sugerir(Set<Propriedade> propriedades, GrafoPropriedades grafo) {
         List<TrocaSugerida> sugestoes = new ArrayList<>();
-        //System.out.println(propriedades);
+
         for (Propriedade p1 : propriedades) {
-            String dono1 = p1.getIdProprietario();
-            //System.out.println(dono1);
-            for (Propriedade vizinha : grafo.getAdjacentes(p1)) {
-                String dono2 = vizinha.getIdProprietario();
-                //System.out.println(dono2);
-                boolean potencial=trocaTemPotencial(p1, vizinha);
-                if (!dono1.equals(dono2) && potencial) {
-                    System.out.println("Entrei no if");
-                    sugestoes.add(new TrocaSugerida(dono1, p1, dono2, vizinha));
+            for (Propriedade p2 : grafo.getAdjacentes(p1)) {
+                if (trocaTemPotencial(p1, p2)) {
+                    sugestoes.add(new TrocaSugerida(p1, p2));
                 }
             }
         }
 
-        sugestoes.sort(Comparator.comparingDouble(this::avaliarPotencialTroca).reversed());
+        sugestoes.sort(Comparator
+                .comparingDouble(TrocaSugerida::getDiferencaArea)
+                .thenComparingDouble(TrocaSugerida::getDistancia));
+
         return sugestoes;
     }
 
     /**
-     * Verifica se uma troca entre duas propriedades tem potencial com base na diferença de área.
-     *
-     * @param a Primeira propriedade.
-     * @param b Segunda propriedade.
-     * @return true se a diferença de área estiver dentro do limite permitido.
+     * Verifica se uma troca entre duas propriedades tem potencial de ser viável.
+     * @param p1 Primeira propriedade
+     * @param p2 Segunda propriedade
+     * @return true se a troca for razoável
      */
-    public boolean trocaTemPotencial(Propriedade a, Propriedade b) {
-        //System.out.println("Entrei com potencial");
-        double areaDiff = Math.abs(a.getArea() - b.getArea());
-        return areaDiff <= 100; // or your own threshold
+    private boolean trocaTemPotencial(Propriedade p1, Propriedade p2) {
+        if (p1.getIdProprietario().equals(p2.getIdProprietario())) {
+            return false;
+        }
+
+        double diferencaArea = Math.abs(p1.getArea() - p2.getArea());
+        if (diferencaArea > MAX_DIFERENCA_AREA) {
+            return false;
+        }
+
+        double distancia = calcularDistancia(p1, p2);
+        return distancia <= MAX_DISTANCIA;
     }
 
     /**
-     * Avalia a qualidade de uma troca sugerida com base na diferença de área entre as propriedades.
-     *
-     * @param troca Troca sugerida a ser avaliada.
-     * @return Pontuação da troca (quanto mais próximo de 1, melhor).
+     * Calcula a distância euclidiana entre duas propriedades com base em coordenadas x e y.
      */
-    public double avaliarPotencialTroca(TrocaSugerida troca) {
-        double areaScore = 1.0 / (1 + Math.abs(troca.getProp1().getArea() - troca.getProp2().getArea()));
-        return areaScore;
+    private double calcularDistancia(Propriedade p1, Propriedade p2) {
+        double dx = p1.getX() - p2.getX();
+        double dy = p1.getY() - p2.getY();
+        return Math.sqrt(dx * dx + dy * dy);
     }
 }
