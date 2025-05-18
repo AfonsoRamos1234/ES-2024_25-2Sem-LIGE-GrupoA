@@ -51,3 +51,7 @@ Testes básicos criados com JUnit 5 para verificar a integridade dos dados e a c
 # gestao-territorio
 Gestão Territorial em Java com Maven
 
+# video do projeto 
+https://youtu.be/YDPffKfy4Xk
+
+
