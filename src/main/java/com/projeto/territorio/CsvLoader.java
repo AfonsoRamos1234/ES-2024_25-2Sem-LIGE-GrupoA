@@ -17,7 +17,7 @@ public class CsvLoader {
      * Ignora a primeira linha (cabeçalho) e gera um identificador incremental para cada propriedade.
      *
      * @param caminhoCSV Caminho para o arquivo CSV.
-     * @return Lista de objetos {@code Propriedade} extraídos do arquivo.
+     * @return Lista de objetos {@code Propriedade} extraidos do arquivo.
      */
     public static List<Propriedade> carregarPropriedades(String caminhoCSV) {
         List<Propriedade> propriedades = new ArrayList<>();
