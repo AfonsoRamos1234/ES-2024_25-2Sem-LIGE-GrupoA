@@ -61,7 +61,7 @@ public class App {
         System.out.println("Número de arestas: " + grafo.numeroDeArestas());
         System.out.println("Grafo de proprietários criado com " + grafoProprietarios.getProprietarios().size() + " proprietários.");
         System.out.println("Número de ligações (arestas): " + grafoProprietarios.numeroDeArestas());
-
+        
         // MENU INTERATIVO
         Scanner scanner = new Scanner(System.in);
         int opcao;
@@ -102,6 +102,7 @@ public class App {
                     break;
                 case 0:
                     System.out.println("A sair...");
+                    scanner.close();
                     break;
                 default:
                     System.out.println("Opção inválida.");
