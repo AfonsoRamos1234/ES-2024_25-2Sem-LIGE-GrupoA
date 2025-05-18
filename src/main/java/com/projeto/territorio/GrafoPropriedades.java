@@ -64,7 +64,7 @@ public class GrafoPropriedades {
         for (Propriedade p : adjacencias.keySet()) {
             total += adjacencias.get(p).size();
         }
-        return total / 2; // porque são bidirecionais
+        return total/2; // porque são bidirecionais
     }
 
     /**
